@@ -26,10 +26,10 @@ export const AppDataSource = new DataSource({
     username: dbconfigService.dbUser,
     password: dbconfigService.dbPassword,
     database: dbconfigService.dbName,
-
     synchronize: false, //Migrations = synchronize: false
     entities: [entity],
     migrations: [migration],
     logging: true,
     subscribers: [PostViewSubscriber, CommentSubscriber, UserSubscriber],
+    ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
 });

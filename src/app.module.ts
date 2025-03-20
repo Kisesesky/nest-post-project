@@ -30,6 +30,7 @@ import { ImagesModule } from './modules/images/images.module';
         migrations: [join(__dirname, './migrations/**/*{.ts,.js}')],
         synchronize: configService.nodeEnv === 'dev',
         subscribers: [join(__dirname, '/**/*.subscriber{.ts,.js}')],
+        ssl:{ rejectUnauthorized: false },
         // migrationsRun: configService.nodeEnv !== 'production',
         // logging: configService.nodeEnv !== 'production',
       }),
