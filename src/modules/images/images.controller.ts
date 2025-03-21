@@ -4,6 +4,7 @@ import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiTags } from '@nes
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ImageUploadDto } from './dto/image-upload.dto';
 import { ImagesService } from './images.service';
+import { Express } from 'express';
 
 @ApiTags('image')
 @Controller('images')
