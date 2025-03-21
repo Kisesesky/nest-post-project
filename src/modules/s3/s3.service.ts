@@ -3,6 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { extname } from 'path';
 import { AwsConfigService } from './../../config/aws/config.service';
 import { Express } from 'express';
+import { Multer } from 'multer';
+import multer from 'multer';
 
 @Injectable()
 export class S3Service {
