@@ -14,6 +14,8 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RequestUser } from '../../decorators/rerquest-user.decorator';
 import { GoogleAuthGuards } from './guards/google-auth.guard';
 import { Express } from 'express';
+import { Multer } from 'multer';
+import multer from 'multer';
 
 @ApiTags('Authorize User')
 @Controller('auth')
