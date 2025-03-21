@@ -13,6 +13,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RequestUser } from '../../decorators/rerquest-user.decorator';
 import { GoogleAuthGuards } from './guards/google-auth.guard';
+import { Express } from 'express';
 
 @ApiTags('Authorize User')
 @Controller('auth')
