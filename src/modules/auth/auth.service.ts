@@ -9,6 +9,7 @@ import { CookieOptions } from 'express';
 import { AppConfigService } from './../../config/app/config.service';
 import { S3Service } from '../s3/s3.service';
 import { User } from '../users/entities/user.entity';
+import { Express } from 'express';
 
 @Injectable()
 export class AuthService {
