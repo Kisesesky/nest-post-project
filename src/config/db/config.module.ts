@@ -15,8 +15,8 @@ import * as Joi from 'joi'
                 DATABASE_PASSWORD: Joi.string().required(),
                 DATABASE_NAME: Joi.string().required(),
                 NODE_ENV: Joi.string().required()
-
-            })
+            }),
+            isGlobal: true,
         })
     ],
     providers: [ConfigService, DbConfigService],

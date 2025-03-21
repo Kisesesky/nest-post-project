@@ -1,28 +1,39 @@
+import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy, VerifyCallback } from 'passport-google-oauth20';
+import { Strategy, Profile, VerifyCallback } from 'passport-google-oauth20';
+import { RegisterType } from "src/modules/users/entities/user.entity";
+import { SocialConfigService } from "../../../config/social/config.service";
+import { UsersService } from './../../users/users.service';
 
-export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-  constructor() {
-    super({
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_CLIENT_CALLBACKURL,
-      scope: ['email', 'profile'],
-    });
-  }
-
-  async validate(accessToken: string, refreshToken: string, profile: any, done: VerifyCallback) {
-    try {
-      const { name, emails, photos } = profile;
-      const user = {
-        email: emails[0].value,
-        firstName: name.familyName,
-        lastName: name.givenName,
-        photo: photos[0].value,
-      };
-      done(null, user);
-    } catch (error) {
-      done(error);
+@Injectable()
+export class GoogleStrategy extends PassportStrategy(Strategy,'google') {
+    constructor(
+        private socialConfigService: SocialConfigService,
+        private usersService: UsersService
+    ) {
+        super({
+            clientID: socialConfigService.googleClientId as string,
+            clientSecret: socialConfigService.googleClientSecret as string,
+            callbackURL: socialConfigService.googleClientCallBackUrl,
+            scope: ['email', 'profile'],
+        })
     }
-  }
+
+    async validate(accessToken: string, refreshToken: string, profile:Profile, done: VerifyCallback) {
+        //user가 있는경우
+        const user = await this.usersService.findUserBySocialId(profile._json.sub, RegisterType.GOOGLE)
+        if(user) {
+            done(null, user)
+            return
+        }
+        //user가 없는경우 회원가입
+        const newUser = await this.usersService.createUser({
+            email: profile._json.sub as string,
+            socialId: profile._json.sub,
+            name: profile._json.name || '',
+            registerType: RegisterType.GOOGLE
+        })
+
+        done(null, newUser)
+    }
 }
