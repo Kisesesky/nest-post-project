@@ -6,12 +6,13 @@ import { ResponseRegisterDto } from './dto/response-register.dto';
 import { User } from './../users/entities/user.entity';
 import { LogInDto } from './dto/log-in.dto';
 import { RequestOrigin } from 'src/decorators/request-origin.decorator';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { ResponseLogInDto } from './dto/response-log-in.dto';
-import { RolesGuard } from './role.guard';
+import { RolesGuard } from './guards/role.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { JwtAuthGuard } from './jwt-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { RequestUser } from '../../decorators/rerquest-user.decorator';
+import { GoogleAuthGuards } from './guards/google-auth.guard';
 
 @ApiTags('Authorize User')
 @Controller('auth')
@@ -71,6 +72,38 @@ export class AuthController {
     })
 
   }
+  @ApiOperation({
+    summary: '구글 로그인',
+    description: '구글 로그인 Api'
+  })
+  @Get('signin/google')
+  @UseGuards(GoogleAuthGuards)
+  googleLogIn() {
+
+  }
+  @ApiOperation({
+    summary: '구글 로그인콜백',
+    description: '구글 로그인콜백 Api'
+  })
+  @Get('signin/google/callback')
+  @UseGuards(GoogleAuthGuards)
+  googleCallback(
+    @RequestUser() user:User,
+    @RequestOrigin() origin: string,
+    @Res() res: Response
+  ){
+    const { accessToken, refreshToken, accessOptions, refreshOptions } =  this.authService.googleLogIn(user.email, origin)
+
+    res.cookie('Authentication', accessToken, accessOptions)
+    res.cookie('Refresh', refreshToken, refreshOptions)
+
+    return res.json({
+      message: '로그인 성공',
+      accessToken: accessToken,
+      refreshToken: refreshToken
+    })
+  }
+  
   // @UseInterceptors(FileInterceptor('file'))
   // @UseGuards(JwtAuthGuard)
   // @ApiOperation({
@@ -83,17 +116,26 @@ export class AuthController {
   //   return { resultUrl }
   // }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('google/login')
-  async googleAuth(@Req() req){
-    console.log('GET google/login')
-  }
+  // @UseGuards(GoogleAuthGuards)
+  // @Get('signin/google')
+  // async googleLogIn(@Req() req: Request){
+  //   console.log('GET signin/google')
+  // }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('oauth2/redirect/google')
-  async googleAuthRedirect(@Req() req, @Res() res){
-    const { user } = req
-    return res.send(user)
-  }
+  // @UseGuards(GoogleAuthGuards)
+  // @Get('signin/google/callback')
+  // async googleAuthCallback(@RequestUser() user: User, @RequestOrigin() origin, @Res() res:Response) {
+  //     const { accessToken, accessOptions, refreshToken, refreshOptions } = 
+  //         await this.authService.googleLogIn(user.email, origin);
+      
+  //     res.cookie('Authentication', accessToken, accessOptions);
+  //     res.cookie('Refresh', refreshToken, refreshOptions);
+  
+  //     return res.json({
+  //         message: '로그인 성공',
+  //         accessToken: accessToken,
+  //         refreshToken: refreshToken
+  //     });
 
+  // }
 }

@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { CookieOptions } from 'express';
 import { AppConfigService } from './../../config/app/config.service';
 import { S3Service } from '../s3/s3.service';
+import { User } from '../users/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -26,10 +27,18 @@ export class AuthService {
 
     if(!await comparePassword(logInDto.password, user.password))
       throw new UnauthorizedException('이메일 또는 패스워드가 잘 못 되었습니다.')
+    return this.jwtTokenBuilder(logInDto.email, origin)
+  }
 
-    const { accessToken, accessOptions } = this.setJwtAccessToken(logInDto.email, origin)
+  googleLogIn(email: string, origin: string) {
+    return this.jwtTokenBuilder(email, origin)
+  }
 
-    const { refreshToken, refreshOptions } = this.setJwtRefreshToken(logInDto.email, origin)
+  jwtTokenBuilder(email: string, origin: string) {
+    
+    const { accessToken, accessOptions } = this.setJwtAccessToken(email, origin)
+
+    const { refreshToken, refreshOptions } = this.setJwtRefreshToken(email, origin)
 
     return {
       accessToken,

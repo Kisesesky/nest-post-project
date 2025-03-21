@@ -6,7 +6,7 @@ import { RequestUser } from '../../decorators/rerquest-user.decorator';
 import { User } from './../users/entities/user.entity';
 import { Roles } from '../../decorators/role.decorator';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ListAllPostDto } from './dto/list-all-post.dto';
 import { PostRoleGuard } from './guards/post-role.guards';
 

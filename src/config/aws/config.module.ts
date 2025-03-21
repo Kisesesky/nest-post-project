@@ -13,7 +13,8 @@ import * as Joi from 'joi'
                 AWS_SECRET_ACCESS_KEY: Joi.string().required(),
                 AWS_BUCKET_NAME: Joi.string().required(),
                 AWS_REGION: Joi.string().required(),
-            })
+            }),
+            isGlobal: true,
         })
     ],
     providers: [ConfigService, AwsConfigService],
