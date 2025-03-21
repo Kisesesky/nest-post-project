@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { Image } from './entities/image.entity';
 import { S3Service } from './../s3/s3.service';
 import { Express } from 'express';
+import { Multer } from 'multer';
+import multer from 'multer';
 
 @Injectable()
 export class ImagesService {
