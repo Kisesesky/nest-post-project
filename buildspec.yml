@@ -7,6 +7,7 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - npm install
+      - npm install --save-dev @types/multer
       - npm install -g @types/express
       - npm install -g @express-serve-static-core
       - npm install -g @types/multer
