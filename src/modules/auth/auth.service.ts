@@ -10,6 +10,8 @@ import { AppConfigService } from './../../config/app/config.service';
 import { S3Service } from '../s3/s3.service';
 import { User } from '../users/entities/user.entity';
 import { Express } from 'express';
+import { Multer } from 'multer';
+import multer from 'multer';
 
 @Injectable()
 export class AuthService {
