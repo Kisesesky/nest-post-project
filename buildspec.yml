@@ -6,7 +6,10 @@ phases:
       nodejs: 22
     commands:
       - echo "Installing dependencies..."
-      - npm install 
+      - npm install
+      - npm install -g @types/express
+      - npm install -g @express-serve-static-core
+      - npm install -g @types/multer
       - npm install -g @nestjs/cli
 
   pre_build:
