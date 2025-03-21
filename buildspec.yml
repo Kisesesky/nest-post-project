@@ -7,9 +7,8 @@ phases:
     commands:
       - echo "Installing dependencies..."
       - npm install
-      - npm install multer @types/multer
       - npm install --save-dev @nestjs/cli
-      - npm install --save-dev @types/multer @types/express
+      - npm install --save-dev multer @types/multer @types/express
 
   pre_build:
     commands:
