@@ -30,7 +30,12 @@ import { ImagesModule } from './modules/images/images.module';
         migrations: [join(__dirname, './migrations/**/*{.ts,.js}')],
         synchronize: configService.nodeEnv === 'dev',
         subscribers: [join(__dirname, '/**/*.subscriber{.ts,.js}')],
-        ssl: false,
+        ssl:
+          dbConfigService.nodeEnv === 'local'
+        ? false
+        : {
+            rejectUnauthorized: false,
+          },
         // migrationsRun: configService.nodeEnv !== 'production',
         // logging: configService.nodeEnv !== 'production',
       }),
