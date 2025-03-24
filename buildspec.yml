@@ -13,6 +13,7 @@ phases:
   pre_build:
     commands:
       - echo "Running database migration..."
+      - npm run migration:revert
       - npm run migration:run 
 
   build:
