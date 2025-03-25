@@ -31,11 +31,9 @@ import { ImagesModule } from './modules/images/images.module';
         synchronize: configService.nodeEnv === 'dev',
         subscribers: [join(__dirname, '/**/*.subscriber{.ts,.js}')],
         ssl:
-          process.env.NODE_ENV === 'production'
-            ? {
-                rejectUnauthorized: false,
-              }
-            : false,
+           {
+            rejectUnauthorized: false,
+          },
         // migrationsRun: configService.nodeEnv !== 'production',
         // logging: configService.nodeEnv !== 'production',
       }),
