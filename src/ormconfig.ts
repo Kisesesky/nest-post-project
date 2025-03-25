@@ -20,9 +20,12 @@ export const AppDataSource = new DataSource({
     username: dbconfigService.dbUser,
     password: dbconfigService.dbPassword,
     database: dbconfigService.dbName,
-    ssl:{
+    ssl:
+    process.env.NODE_ENV === 'production'
+      ? {
           rejectUnauthorized: false,
-        },
+        }
+      : false,
     synchronize: false, //Migrations = synchronize: false
     entities: [entity],
     migrations: [migration],
